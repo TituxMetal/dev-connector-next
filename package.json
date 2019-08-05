@@ -1,0 +1,48 @@
+{
+  "name": "dev-connector-next",
+  "description": "A fullstack social network app built with Next.js, Express, Mongoose and other fun and modern libraries.",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "Desktop | Tuxi Metal <tuximetal@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "env-cmd -f ./dev.env nodemon index.js",
+    "build": "next build",
+    "test": "env-cmd -f ./test.env jest --runInBand",
+    "test-coverage": "env-cmd -f ./test.env jest --coverage test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TituxMetal/dev-connector-next"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "server/**/*.js",
+      "!**/node_modules/**",
+      "!**/tests/report/**",
+      "!**/.next/**/*"
+    ],
+    "coverageDirectory": "./tests/report",
+    "coverageReporters": [
+      "html"
+    ]
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "next": "^9.0.3",
+    "polished": "^3.4.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "styled-components": "^4.3.2",
+    "styled-icons": "^8.3.0"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "^1.10.6",
+    "env-cmd": "^9.0.3",
+    "jest": "^24.8.0",
+    "nodemon": "^1.19.1",
+    "supertest": "^4.0.2"
+  }
+}
