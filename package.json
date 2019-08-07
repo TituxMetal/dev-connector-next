@@ -9,6 +9,10 @@
     "start": "node index.js",
     "dev": "env-cmd -f ./dev.env nodemon index.js",
     "build": "next build",
+    "docker:mongo": "docker run -d --rm --name mongoDev -p 27017:27017 -v /etc/localtime:/etc/localtime:ro -v /etc/timezone:/etc/timezone:ro -v ~/mongoData/data:/data/db mongo:4.0.5",
+    "docker:mongoClean": "docker rm -f mongoDev",
+    "docker:redis": "docker run -d --rm --name redisDev -p 6379:6379 redis redis-server --requirepass redisDev",
+    "docker:redisClean": "docker rm -f redisDev",
     "test": "env-cmd -f ./test.env jest --runInBand",
     "test-coverage": "env-cmd -f ./test.env jest --coverage test/*.test.js"
   },
