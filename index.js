@@ -5,6 +5,8 @@ const dev = !isProd
 const app = next({ dev })
 const handle = app.getRequestHandler()
 
+require('./server/database')()
+
 const server = require('./server/app')
 
 app.prepare().then(() => {
