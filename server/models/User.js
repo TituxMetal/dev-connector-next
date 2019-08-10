@@ -1,0 +1,78 @@
+const mongoose = require('mongoose')
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const crypto = require('crypto')
+
+const { jwtSecret, jwtOptions } = require('../config')
+
+const userSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true, unique: true, trim: true },
+    email: { type: String, required: true, unique: true, trim: true },
+    password: { type: String, required: true, trim: true },
+    avatar: { type: String },
+    token: { type: String }
+  },
+  { timestamps: true }
+)
+
+userSchema.pre('save', async function () {
+  const user = this
+
+  if (user.isModified('password')) {
+    const salt = await bcrypt.genSalt(12)
+
+    user.password = await bcrypt.hash(user.password, salt)
+  }
+
+  if (user.isModified('email')) {
+    const md5 = crypto
+      .createHash('md5')
+      .update(user.email)
+      .digest('hex')
+
+    user.avatar = `https://www.gravatar.com/avatar/${md5}?s=200&d=identicon&r=pg`
+  }
+})
+
+userSchema.methods.toJSON = function () {
+  const user = this
+  const userObject = user.toObject()
+
+  delete userObject.password
+
+  return userObject
+}
+
+userSchema.methods.generateAuthToken = async function () {
+  const user = this
+  const id = user.id.toString()
+  const token = await jwt.sign({ id }, jwtSecret, jwtOptions)
+
+  user.token = token
+
+  await user.save()
+
+  return token
+}
+
+userSchema.statics.findByCredentials = async (email, password) => {
+  const user = await user.findOne({ email })
+  const errorMessage = JSON.stringify({ errors: { message: 'Unable to login. Bad credentials.' } })
+
+  if (!user) {
+    throw new Error(errorMessage)
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password)
+
+  if (!isMatch) {
+    throw new Error(errorMessage)
+  }
+
+  return user
+}
+
+const User = mongoose.model('User', userSchema)
+
+module.exports = User
