@@ -57,7 +57,7 @@ userSchema.methods.generateAuthToken = async function () {
 }
 
 userSchema.statics.findByCredentials = async (email, password) => {
-  const user = await user.findOne({ email })
+  const user = await User.findOne({ email })
   const errorMessage = JSON.stringify({ errors: { message: 'Unable to login. Bad credentials.' } })
 
   if (!user) {
