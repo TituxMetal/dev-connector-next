@@ -26,6 +26,25 @@ const register = async ({ value, session }, res) => {
   }
 }
 
-const UserController = { register }
+const login = async ({ session, value }, res) => {
+  const { email, password } = value.body
+
+  try {
+    const user = await User.findByCredentials(email, password)
+    const token = await user.generateAuthToken()
+
+    session.accessToken = token
+    user.token = token
+
+    await user.save()
+
+    res.json({ user, success: true })
+  } catch (err) {
+    console.error(err)
+    res.status(400).send(err.message)
+  }
+}
+
+const UserController = { login, register }
 
 module.exports = UserController
