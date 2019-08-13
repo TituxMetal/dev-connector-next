@@ -6,7 +6,7 @@ const { mongoUri, mongoOptions, jwtOptions, jwtSecret } = require('../server/con
 
 const userOneId = new mongoose.Types.ObjectId()
 const userOne = {
-  id: userOneId,
+  _id: userOneId,
   name: 'User One',
   email: 'userone@test.com',
   password: 'Test1234',
@@ -14,9 +14,9 @@ const userOne = {
 }
 
 const userTwoId = new mongoose.Types.ObjectId()
-const userTwoToken = jwt.sign({ id: userTwoId }, jwtSecret, jwtOptions)
+const userTwoToken = jwt.sign({ _id: userTwoId }, jwtSecret, jwtOptions)
 const userTwo = {
-  id: userTwoId,
+  _id: userTwoId,
   name: 'User Two',
   email: 'usertwo@test.com',
   password: 'Test1234',
