@@ -30,4 +30,12 @@ const register = Joi.object().keys({
   password: isUpdate(password)
 })
 
-module.exports = { register }
+const login = Joi.object().keys({
+  email: isUpdate(email),
+  password: Joi.string()
+    .trim()
+    .label('Password field')
+    .required()
+})
+
+module.exports = { login, register }
