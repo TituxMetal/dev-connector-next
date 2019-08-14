@@ -2,7 +2,7 @@ const request = require('supertest')
 
 const server = require('../server/app')
 const { User } = require('../server/models')
-const { userOne, setupDatabase, cleanupDatabase } = require('./setup')
+const { userOne, userTwo, setupDatabase, cleanupDatabase } = require('./setup')
 
 describe('Users Routes', () => {
   const testUser = { name: 'test', email: 'test@test.com', password: 'test1234' }
@@ -108,6 +108,55 @@ describe('Users Routes', () => {
       expect(errors.password).toBeDefined()
       expect(errors.email).toBe('"Email field" must be a valid email')
       expect(errors.password).toBe('"Password field" is not allowed to be empty')
+    })
+  })
+
+  describe('POST /api/users/logout => Logout user', () => {
+    it('should logout current authenticated user with token header', async () => {
+      const { email, token } = userTwo
+      const { body } = await request(server)
+        .post('/api/users/logout')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200)
+
+      expect(body).toEqual({ success: true })
+
+      const user = await User.findOne({ email })
+
+      expect(user.token).toBe('')
+    })
+
+    it('should logout current authenticated user with session cookie', async () => {
+      const { email, password } = userTwo
+      const response = await request(server)
+        .post('/api/users/login')
+        .send({ email, password })
+        .expect(200)
+
+      expect(response.header['set-cookie']).toBeDefined()
+
+      const cookie = response.header['set-cookie'][0].split(';')[0]
+      const { header, body } = await request(server)
+        .post('/api/users/logout')
+        .set('Cookie', cookie)
+        .expect(200)
+
+      expect(header['set-cookie'][0].split(';')[0]).toBe('token=')
+      expect(body).toEqual({ success: true })
+
+      const { token } = await User.findOne({ email })
+
+      expect(token).toEqual('')
+    })
+
+    it('should return status 401 and an error message if user is already logged out', async () => {
+      const { error } = await request(server)
+        .post('/api/users/logout')
+        .expect(401)
+
+      const { errors } = JSON.parse(error.text)
+
+      expect(errors.message).toBe('You must be authenticated')
     })
   })
 })
