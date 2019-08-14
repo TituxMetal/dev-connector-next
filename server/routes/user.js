@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
 const UserController = require('../controllers/user')
-const { validateBody } = require('../middlewares')
+const { isAuthenticated, validateBody } = require('../middlewares')
 const { login, register } = require('../validation/users')
 
 /*
@@ -19,5 +19,12 @@ router.post('/register', validateBody(register, false), UserController.register)
  @access    Public
 */
 router.post('/login', validateBody(login, false), UserController.login)
+
+/*
+ @route     POST api/users/logout
+ @desc      Logout user
+ @access    Private
+*/
+router.post('/logout', isAuthenticated, UserController.logout)
 
 module.exports = router
