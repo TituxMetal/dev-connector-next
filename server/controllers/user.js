@@ -45,6 +45,33 @@ const login = async ({ session, value }, res) => {
   }
 }
 
-const UserController = { login, register }
+const logout = async (req, res) => {
+  try {
+    if (!req.user) {
+      const error = JSON.stringify({ errors: { message: 'You must be authenticated' } })
+
+      throw new Error(error)
+    }
+
+    const { email, token } = req.user
+    const logoutUser = await User.findOne({ $or: [{ email }, { token }] })
+
+    logoutUser.token = ''
+
+    await logoutUser.save()
+
+    delete req.user
+
+    delete req.session
+
+    res.clearCookie(sessName)
+    res.status(200).json({ success: true })
+  } catch (err) {
+    console.error(err)
+    res.status(401).send(err.message)
+  }
+}
+
+const UserController = { login, logout, register }
 
 module.exports = UserController
