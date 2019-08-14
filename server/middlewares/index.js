@@ -1,4 +1,5 @@
+const isAuthenticated = require('./isAuthenticated')
 const session = require('./session')
 const validateBody = require('./validateBody')
 
-module.exports = { session, validateBody }
+module.exports = { isAuthenticated, session, validateBody }
