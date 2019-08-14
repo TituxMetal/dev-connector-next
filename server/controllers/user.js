@@ -72,6 +72,9 @@ const logout = async (req, res) => {
   }
 }
 
-const UserController = { login, logout, register }
+const me = async ({ user }, res) =>
+  user ? res.json({ user, success: true }) : res.json({ user: false, success: false })
+
+const UserController = { login, logout, me, register }
 
 module.exports = UserController
