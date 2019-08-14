@@ -27,4 +27,11 @@ router.post('/login', validateBody(login, false), UserController.login)
 */
 router.post('/logout', isAuthenticated, UserController.logout)
 
+/*
+ @route     GET api/users/me
+ @desc      Check user authentication
+ @access    Private
+*/
+router.get('/me', isAuthenticated, UserController.me)
+
 module.exports = router
