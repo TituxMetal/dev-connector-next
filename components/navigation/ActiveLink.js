@@ -7,7 +7,7 @@ const ActiveLink = withRouter(({ router, children, ...props }) => {
   let className = child.props.className || ''
 
   return (
-    <Link {...props}>
+    <Link {...props} passHref>
       {React.cloneElement(Children.only(children), {
         className: router.pathname === props.href ? `${className} isActive`.trim() : null
       })}
