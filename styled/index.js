@@ -1,3 +1,6 @@
 export { default as Footer } from './Footer'
+export { default as Form } from './Form'
 export { GlobalStyle, theme } from './globalStyle'
+export { default as Message } from './Message'
 export { default as Wrapper } from './Wrapper'
+export { type } from './utils'
