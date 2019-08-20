@@ -1,7 +1,9 @@
+import { useContext } from 'react'
 import styled from 'styled-components'
 import { Code } from 'styled-icons/fa-solid/Code'
 import { shade, tint, transparentize } from 'polished'
 
+import { UserContext } from '../../context'
 import { NavLink, SignedInLinks, SignedOutLinks } from '../navigation'
 
 const NavBar = styled.nav`
@@ -42,18 +44,23 @@ const List = styled.ul`
   padding: 1rem;
 `
 
-export default () => (
-  <NavBar>
-    <Brand>
-      <Code />
-      <NavLink href='/'>Dev connector</NavLink>
-    </Brand>
-    <List>
-      <li>
-        <NavLink href='/developers'>Developers</NavLink>
-      </li>
-      <SignedInLinks />
-      <SignedOutLinks />
-    </List>
-  </NavBar>
-)
+const Menu = () => {
+  const { isAuthenticated } = useContext(UserContext)
+
+  return (
+    <NavBar>
+      <Brand>
+        <Code />
+        <NavLink href='/'>Dev connector</NavLink>
+      </Brand>
+      <List>
+        <li>
+          <NavLink href='/developers'>Developers</NavLink>
+        </li>
+        {isAuthenticated ? <SignedInLinks /> : <SignedOutLinks />}
+      </List>
+    </NavBar>
+  )
+}
+
+export default Menu
