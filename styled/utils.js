@@ -1,0 +1,1 @@
+export const type = props => (props.info && 'info') || (props.success && 'success') || (props.danger && 'danger') || (props.primary && 'primary') || (props.secondary && 'secondary') || (props.complementary && 'complementary') || 'secondary'
