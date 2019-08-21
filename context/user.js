@@ -1,7 +1,7 @@
 import { useEffect, useState, createContext } from 'react'
 import Router from 'next/router'
 
-import { register } from '../lib'
+import { register, login } from '../lib'
 export const UserContext = createContext()
 
 export const UserProvider = ({ children, pathname, authStatus }) => {
@@ -27,7 +27,9 @@ export const UserProvider = ({ children, pathname, authStatus }) => {
 
   const submitAuth = async authData => {
     try {
-      const { data } = pathname === '/register' && (await register(authData))
+      const { data } =
+        (pathname === '/register' && (await register(authData))) ||
+        (pathname === '/login' && (await login(authData)))
 
       setFields(initialFields)
       setError('')
