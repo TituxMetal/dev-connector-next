@@ -45,7 +45,7 @@ const List = styled.ul`
 `
 
 const Menu = () => {
-  const { isAuthenticated } = useContext(UserContext)
+  const { isAuthenticated, handleLogout } = useContext(UserContext)
 
   return (
     <NavBar>
@@ -57,7 +57,7 @@ const Menu = () => {
         <li>
           <NavLink href='/developers'>Developers</NavLink>
         </li>
-        {isAuthenticated ? <SignedInLinks /> : <SignedOutLinks />}
+        {isAuthenticated ? <SignedInLinks logout={handleLogout} /> : <SignedOutLinks />}
       </List>
     </NavBar>
   )
