@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi')
 
-const validateBody = (schema, update) => (req, res, next) => {
+const validateBody = (schema, update = false) => (req, res, next) => {
   const result = Joi.validate(req.body, schema, { abortEarly: false, context: { update } })
 
   if (result.error) {
