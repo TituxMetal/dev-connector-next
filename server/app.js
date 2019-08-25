@@ -11,6 +11,7 @@ server.set('trust proxy', true)
 server.use(session)
 
 server.use('/api/users', require('./routes/user'))
+server.use('/api/profiles', require('./routes/profile'))
 
 server.use((err, _req, res, _next) => {
   const { status = 500, message } = err
