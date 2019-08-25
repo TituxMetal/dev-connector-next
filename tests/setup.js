@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 
-const { User } = require('../server/models')
+const { User, Profile } = require('../server/models')
 const { mongoUri, mongoOptions, jwtOptions, jwtSecret } = require('../server/config')
 
 const userOneId = new mongoose.Types.ObjectId()
@@ -23,15 +23,26 @@ const userTwo = {
   token: userTwoToken
 }
 
+const profileOneId = new mongoose.Types.ObjectId()
+const profileOne = {
+  _id: profileOneId,
+  user: userOneId,
+  status: 'Tester',
+  skills: ['Jest', 'Node']
+}
+
 const setupDatabase = async () => {
   try {
     await mongoose.connect(
       mongoUri,
       mongoOptions
     )
+
+    await Profile.deleteMany()
     await User.deleteMany()
     await new User(userOne).save()
     await new User(userTwo).save()
+    await new Profile(profileOne).save()
   } catch (err) {
     console.error(err)
   }
@@ -51,6 +62,8 @@ module.exports = {
   userTwoId,
   userTwoToken,
   userTwo,
+  profileOneId,
+  profileOne,
   setupDatabase,
   cleanupDatabase
 }
