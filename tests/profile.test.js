@@ -130,4 +130,38 @@ describe('Profiles Routes', () => {
       expect(errors.status).toEqual(`"Status field" is required`)
     })
   })
+
+  describe('GET /api/profiles/me => Get the current logged in user profile', () => {
+    it('should return the current logged in user profile', async () => {
+      await new Profile({ ...testProfile, user: userTwoId }).save()
+      const { body } = await request(server)
+        .get('/api/profiles/me')
+        .set('Authorization', `Bearer ${userTwoToken}`)
+        .expect(200)
+
+      expect(body.company).toEqual(testProfile.company)
+      expect(body.user._id).toBe(userTwoId.toString())
+    })
+
+    it('should return error 400 if the user is not authenticated', async () => {
+      const { error } = await request(server)
+        .get('/api/profiles/me')
+        .expect(400)
+
+      const { errors } = JSON.parse(error.text)
+
+      expect(errors.message).toEqual('You must be authenticated')
+    })
+
+    it('should return error 404 if no profile found for the current logged in user', async () => {
+      const { error } = await request(server)
+        .get('/api/profiles/me')
+        .set('Authorization', `Bearer ${userTwoToken}`)
+        .expect(404)
+
+      const { errors } = JSON.parse(error.text)
+
+      expect(errors.message).toEqual('No profile found')
+    })
+  })
 })
