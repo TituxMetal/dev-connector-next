@@ -6,6 +6,7 @@ const {
   profileOneId,
   profileOne,
   userOne,
+  userOneId,
   userTwoToken,
   userTwoId,
   setupDatabase,
@@ -162,6 +163,36 @@ describe('Profiles Routes', () => {
       const { errors } = JSON.parse(error.text)
 
       expect(errors.message).toEqual('No profile found')
+    })
+  })
+
+  describe('GET /api/profiles/user/:userId => Get profile by user id', () => {
+    it('should return the profile for the given user id', async () => {
+      const { body } = await request(server)
+        .get(`/api/profiles/user/${userOneId}`)
+        .expect(200)
+
+      expect(body.user._id).toEqual(userOneId.toString())
+    })
+
+    it('should return error 404 if no profile found', async () => {
+      const { error } = await request(server)
+        .get(`/api/profiles/user/${userTwoId}`)
+        .expect(404)
+
+      const { errors } = JSON.parse(error.text)
+
+      expect(errors.message).toEqual('No profile found for this user')
+    })
+
+    it('should return 404 if invalid user id given', async () => {
+      const { error } = await request(server)
+        .get(`/api/profiles/user/abcd`)
+        .expect(404)
+
+      const { errors } = JSON.parse(error.text)
+
+      expect(errors.message).toEqual('No profile found, invalid user id')
     })
   })
 })
