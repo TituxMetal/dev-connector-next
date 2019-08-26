@@ -26,6 +26,23 @@ const edit = async ({ user, value }, res) => {
   }
 }
 
-const ProfileController = { edit }
+const all = async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate('user', ['name', 'avatar'])
+
+    if (profiles.length === 0) {
+      const error = JSON.stringify({ errors: { message: 'No profiles found' } })
+
+      throw new Error(error)
+    }
+
+    res.status(200).json(profiles)
+  } catch (err) {
+    console.error(err.message)
+    res.status(404).send(err.message)
+  }
+}
+
+const ProfileController = { edit, all }
 
 module.exports = ProfileController
