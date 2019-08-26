@@ -19,4 +19,11 @@ router.post('/', isAuthenticated, validateBody(edit), ProfileController.edit)
 */
 router.get('/', ProfileController.all)
 
+/*
+ @route     GET api/profiles/me
+ @desc      Get the current logged in user profile
+ @access    Private
+*/
+router.get('/me', isAuthenticated, ProfileController.current)
+
 module.exports = router
