@@ -34,6 +34,28 @@ describe('Profiles Routes', () => {
 
   afterEach(async () => await cleanupDatabase())
 
+  describe('GET /api/profiles', () => {
+    it('should return all users profiles', async () => {
+      await new Profile({ ...testProfile, user: userTwoId }).save()
+      const { body } = await request(server)
+        .get('/api/profiles')
+        .expect(200)
+
+      expect(body.length).toBe(2)
+    })
+
+    it('should return 404 error if no users profiles found', async () => {
+      await Profile.deleteMany()
+      const { error } = await request(server)
+        .get('/api/profiles')
+        .expect(404)
+
+      const { errors } = JSON.parse(error.text)
+
+      expect(errors.message).toBe('No profiles found')
+    })
+  })
+
   describe('POST /api/profiles => Edit a user profile', () => {
     it('should add the profile of the current logged in user', async () => {
       const { body } = await request(server)
