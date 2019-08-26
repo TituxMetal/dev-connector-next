@@ -26,4 +26,11 @@ router.get('/', ProfileController.all)
 */
 router.get('/me', isAuthenticated, ProfileController.current)
 
+/*
+ @route     GET api/profiles/user/:userId
+ @desc      Get profile by user id
+ @access    Public
+*/
+router.get('/user/:userId', ProfileController.user)
+
 module.exports = router
