@@ -43,6 +43,25 @@ const all = async (req, res) => {
   }
 }
 
-const ProfileController = { edit, all }
+const current = async ({ user }, res) => {
+  try {
+    if (!user) {
+      return res.status(400).json({ errors: { message: 'You must be authenticated' } })
+    }
+
+    const profile = await Profile.findOne({ user: user._id }).populate('user', ['name', 'avatar'])
+
+    if (!profile) {
+      return res.status(404).json({ errors: { message: 'No profile found' } })
+    }
+
+    res.status(200).json(profile)
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send(err.message)
+  }
+}
+
+const ProfileController = { all, current, edit }
 
 module.exports = ProfileController
