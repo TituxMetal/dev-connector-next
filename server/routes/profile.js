@@ -12,4 +12,11 @@ const { edit } = require('../validation/profiles')
 */
 router.post('/', isAuthenticated, validateBody(edit), ProfileController.edit)
 
+/*
+ @route     GET api/profiles
+ @desc      Get all users profiles
+ @access    Public
+*/
+router.get('/', ProfileController.all)
+
 module.exports = router
