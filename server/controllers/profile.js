@@ -1,3 +1,5 @@
+const ObjectId = require('mongoose').Types.ObjectId
+
 const { Profile } = require('../models')
 
 const edit = async ({ user, value }, res) => {
@@ -62,6 +64,27 @@ const current = async ({ user }, res) => {
   }
 }
 
-const ProfileController = { all, current, edit }
+const user = async ({ params }, res) => {
+  try {
+    const user = params.userId
+
+    if (!ObjectId.isValid(user)) {
+      return res.status(404).json({ errors: { message: 'No profile found, invalid user id' } })
+    }
+
+    const profile = await Profile.findOne({ user }).populate('user', ['name', 'avatar'])
+
+    if (!profile) {
+      return res.status(404).json({ errors: { message: 'No profile found for this user' } })
+    }
+
+    res.status(200).json(profile)
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send(err.message)
+  }
+}
+
+const ProfileController = { all, current, edit, user }
 
 module.exports = ProfileController
