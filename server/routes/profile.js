@@ -4,6 +4,7 @@ const ProfileController = require('../controllers/profile')
 const { isAuthenticated, validateBody } = require('../middlewares')
 const { edit } = require('../validation/profiles')
 const experience = require('../validation/experience')
+const education = require('../validation/education')
 
 /*
  @route     POST api/profiles
@@ -40,5 +41,12 @@ router.get('/user/:userId', ProfileController.user)
  @access    Private
 */
 router.put('/experience', isAuthenticated, validateBody(experience), ProfileController.experience)
+
+/*
+ @route     PUT api/profiles/education
+ @desc      Add profile education
+ @access    Private
+*/
+router.put('/education', isAuthenticated, validateBody(education), ProfileController.education)
 
 module.exports = router
