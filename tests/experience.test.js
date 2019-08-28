@@ -89,7 +89,6 @@ describe('Profiles Routes', () => {
         company: 123,
         location: 'az',
         description: 'azaze',
-        location: 'az',
         from: 'az123',
         current: 'az'
       }
@@ -101,7 +100,6 @@ describe('Profiles Routes', () => {
 
       const { errors } = JSON.parse(error.text)
 
-      expect(errors.title).toBe(`"Title field" is required`)
       expect(errors.company).toBe(`"Company field" must be a string`)
       expect(errors.location).toBe(`"Location field" length must be at least 4 characters long`)
       expect(errors.from).toBe(`"From field" must be a number of milliseconds or valid date string`)
