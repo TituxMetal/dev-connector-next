@@ -112,6 +112,33 @@ const experience = async ({ user, body }, res) => {
   }
 }
 
-const ProfileController = { all, current, edit, experience, user }
+const education = async ({ user, body }, res) => {
+  try {
+    if (!user) {
+      return res.status(401).json({ errors: { message: 'You must be authenticated' } })
+    }
+
+    const profile = await Profile.findOne({ user })
+
+    if (!profile) {
+      return res
+        .status(404)
+        .json({ errors: { message: 'A profile must be created before adding education' } })
+    }
+
+    const newEducation = { ...body }
+
+    profile.education.unshift(newEducation)
+
+    await profile.save()
+
+    res.status(200).json(profile)
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send(err.message)
+  }
+}
+
+const ProfileController = { all, current, edit, education, experience, user }
 
 module.exports = ProfileController
