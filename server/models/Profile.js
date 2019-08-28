@@ -41,6 +41,31 @@ const profileSchema = new mongoose.Schema(
         current: { type: Boolean, default: false },
         description: { type: String, trim: true }
       }
+    ],
+    education: [
+      {
+        school: {
+          type: String,
+          required: true,
+          trim: true
+        },
+        degree: {
+          type: String,
+          required: true,
+          trim: true
+        },
+        fieldofstudy: {
+          type: String,
+          trim: true
+        },
+        from: {
+          type: Date,
+          required: true
+        },
+        to: { type: Date },
+        current: { type: Boolean, default: false },
+        description: { type: String, trim: true }
+      }
     ]
   },
   { timestamps: true }
