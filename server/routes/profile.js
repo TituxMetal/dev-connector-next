@@ -3,6 +3,7 @@ const router = require('express').Router()
 const ProfileController = require('../controllers/profile')
 const { isAuthenticated, validateBody } = require('../middlewares')
 const { edit } = require('../validation/profiles')
+const experience = require('../validation/experience')
 
 /*
  @route     POST api/profiles
@@ -32,5 +33,12 @@ router.get('/me', isAuthenticated, ProfileController.current)
  @access    Public
 */
 router.get('/user/:userId', ProfileController.user)
+
+/*
+ @route     PUT api/profiles/experience
+ @desc      Add profile experience
+ @access    Private
+*/
+router.put('/experience', isAuthenticated, validateBody(experience), ProfileController.experience)
 
 module.exports = router
