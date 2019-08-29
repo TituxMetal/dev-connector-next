@@ -43,6 +43,13 @@ router.get('/user/:userId', ProfileController.user)
 router.put('/experience', isAuthenticated, validateBody(experience), ProfileController.experience)
 
 /*
+ @route     DELETE api/profiles/experience/:expId
+ @desc      Delete experience from profile
+ @access    Private
+*/
+router.delete('/experience/:expId', isAuthenticated, ProfileController.removeExp)
+
+/*
  @route     PUT api/profiles/education
  @desc      Add profile education
  @access    Private
