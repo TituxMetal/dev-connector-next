@@ -3,6 +3,7 @@ const request = require('supertest')
 const server = require('../server/app')
 const Profile = require('../server/models/Profile')
 const {
+  experienceOneId,
   profileOneId,
   profileOne,
   userOne,
@@ -128,6 +129,41 @@ describe('Profiles Routes', () => {
 
       const { errors } = JSON.parse(error.text)
       expect(errors.message).toBe('You must be authenticated')
+    })
+  })
+
+  describe('DELETE /api/profiles/experience/:expId => Delete an experience from profile', () => {
+    it('should delete an experience from user profile', async () => {
+      const { email, password } = userOne
+      const res = await request(server)
+        .post('/api/users/login')
+        .send({ email, password })
+        .expect(200)
+      const { token } = res.body.user
+      const { body } = await request(server)
+        .delete(`/api/profiles/experience/${experienceOneId}`)
+        .set('Authorization', `${token}`)
+        .expect(200)
+
+      expect(body.experience.length).toBe(0)
+    })
+
+    it('should return error 401 if user is no authenticated', async () => {
+      const { error } = await request(server)
+        .delete(`/api/profiles/experience/${experienceOneId}`)
+        .expect(401)
+
+      const { errors } = JSON.parse(error.text)
+      expect(errors.message).toBe('You must be authenticated')
+    })
+
+    it('should return error 404 if invalid experience id given', async () => {
+      const { error } = await request(server)
+        .delete(`/api/profiles/experience/123abc`)
+        .expect(404)
+
+      const { errors } = JSON.parse(error.text)
+      expect(errors.message).toBe('No experience found, invalid experience id')
     })
   })
 })
