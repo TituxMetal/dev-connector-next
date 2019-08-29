@@ -34,13 +34,25 @@ const experienceOne = {
   to: '2002-06-06'
 }
 
+const educationOneId = new mongoose.Types.ObjectId()
+const educationOne = {
+  _id: educationOneId,
+  school: 'Education One',
+  degree: 'Test Company',
+  fieldofstudy: 'Testing',
+  description: 'Education one description',
+  from: '2001-02-02',
+  to: '2002-06-06'
+}
+
 const profileOneId = new mongoose.Types.ObjectId()
 const profileOne = {
   _id: profileOneId,
   user: userOneId,
   status: 'Tester',
   skills: ['Jest', 'Node'],
-  experience: [experienceOne]
+  experience: [experienceOne],
+  education: [educationOne]
 }
 
 const setupDatabase = async () => {
@@ -70,6 +82,7 @@ const cleanupDatabase = async () => {
 
 module.exports = {
   experienceOneId,
+  educationOneId,
   userOneId,
   userOne,
   userTwoId,
