@@ -195,4 +195,28 @@ describe('Profiles Routes', () => {
       expect(errors.message).toEqual('No profile found, invalid user id')
     })
   })
+
+  describe('DELETE /api/profiles => Delete a user profile', () => {
+    it('should delete the current logged in user profile', async () => {
+      await new Profile({ ...testProfile, user: userTwoId }).save()
+      expect(await Profile.findOne({ user: userTwoId }).countDocuments()).toBe(1)
+
+      const { body } = await request(server)
+        .delete('/api/profiles')
+        .set('Authorization', `Bearer ${userTwoToken}`)
+        .expect(204)
+
+      expect(await Profile.findOne({ user: userTwoId })).toBeNull()
+    })
+
+    it('should return 401 if user is not authenticated', async () => {
+      const { error } = await request(server)
+        .delete('/api/profiles')
+        .expect(401)
+
+      const { errors } = JSON.parse(error.text)
+
+      expect(errors.message).toEqual('You must be authenticated')
+    })
+  })
 })
