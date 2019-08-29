@@ -34,4 +34,11 @@ router.post('/logout', isAuthenticated, UserController.logout)
 */
 router.get('/me', isAuthenticated, UserController.me)
 
+/*
+ @route     DELETE api/users
+ @desc      Delete the current logged in user
+ @access    Private
+*/
+router.delete('/', isAuthenticated, UserController.remove)
+
 module.exports = router
