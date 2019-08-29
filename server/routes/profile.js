@@ -36,6 +36,13 @@ router.get('/me', isAuthenticated, ProfileController.current)
 router.get('/user/:userId', ProfileController.user)
 
 /*
+ @route     DELETE api/profiles
+ @desc      Delete a user profile
+ @access    Private
+*/
+router.delete('/', isAuthenticated, ProfileController.remove)
+
+/*
  @route     PUT api/profiles/experience
  @desc      Add profile experience
  @access    Private
