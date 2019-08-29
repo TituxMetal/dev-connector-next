@@ -56,4 +56,11 @@ router.delete('/experience/:expId', isAuthenticated, ProfileController.removeExp
 */
 router.put('/education', isAuthenticated, validateBody(education), ProfileController.education)
 
+/*
+ @route     DELETE api/profiles/education/:eduId
+ @desc      Delete education from profile
+ @access    Private
+*/
+router.delete('/education/:eduId', isAuthenticated, ProfileController.removeEdu)
+
 module.exports = router
