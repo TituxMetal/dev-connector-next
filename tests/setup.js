@@ -23,12 +23,24 @@ const userTwo = {
   token: userTwoToken
 }
 
+const experienceOneId = new mongoose.Types.ObjectId()
+const experienceOne = {
+  _id: experienceOneId,
+  title: 'Experience One',
+  company: 'Test Company',
+  location: 'Test location',
+  description: 'Experience one description',
+  from: '2001-02-02',
+  to: '2002-06-06'
+}
+
 const profileOneId = new mongoose.Types.ObjectId()
 const profileOne = {
   _id: profileOneId,
   user: userOneId,
   status: 'Tester',
-  skills: ['Jest', 'Node']
+  skills: ['Jest', 'Node'],
+  experience: [experienceOne]
 }
 
 const setupDatabase = async () => {
@@ -57,6 +69,7 @@ const cleanupDatabase = async () => {
 }
 
 module.exports = {
+  experienceOneId,
   userOneId,
   userOne,
   userTwoId,
