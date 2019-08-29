@@ -1,5 +1,5 @@
 const { sessName } = require('../config')
-const { User } = require('../models')
+const { User, Profile } = require('../models')
 
 const register = async ({ value, session }, res) => {
   const { name, email, password } = value.body
@@ -75,6 +75,22 @@ const logout = async (req, res) => {
 const me = async ({ user }, res) =>
   user ? res.json({ user, success: true }) : res.json({ user: false, success: false })
 
-const UserController = { login, logout, me, register }
+const remove = async ({ user }, res) => {
+  try {
+    if (!user) {
+      return res.status(401).json({ errors: { message: 'You must be authenticated' } })
+    }
+
+    await Profile.findOneAndRemove({ user })
+    await User.findOneAndRemove({ _id: user })
+
+    res.status(204).json({ success: { message: 'User successfully deleted' } })
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send(err.message)
+  }
+}
+
+const UserController = { login, logout, me, register, remove }
 
 module.exports = UserController
