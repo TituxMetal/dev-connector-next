@@ -85,6 +85,20 @@ const user = async ({ params }, res) => {
   }
 }
 
+const remove = async ({ user }, res) => {
+  try {
+    if (!user) {
+      return res.status(401).json({ errors: { message: 'You must be authenticated' } })
+    }
+
+    await Profile.findOneAndRemove({ user: user._id })
+    res.status(204).json({ success: { message: 'Profile successfully deleted' } })
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send(err.message)
+  }
+}
+
 const experience = async ({ user, body }, res) => {
   try {
     if (!user) {
@@ -201,6 +215,16 @@ const removeEdu = async ({ user, params }, res) => {
   }
 }
 
-const ProfileController = { all, current, edit, education, experience, removeEdu, removeExp, user }
+const ProfileController = {
+  all,
+  current,
+  remove,
+  edit,
+  education,
+  experience,
+  removeEdu,
+  removeExp,
+  user
+}
 
 module.exports = ProfileController
