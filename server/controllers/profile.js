@@ -112,6 +112,37 @@ const experience = async ({ user, body }, res) => {
   }
 }
 
+const removeExp = async ({ user, params }, res) => {
+  try {
+    const expId = params.expId
+
+    if (!ObjectId.isValid(expId)) {
+      return res
+        .status(404)
+        .json({ errors: { message: 'No experience found, invalid experience id' } })
+    }
+
+    if (!user) {
+      return res.status(401).json({ errors: { message: 'You must be authenticated' } })
+    }
+
+    const profile = await Profile.findOne({ user })
+
+    if (!profile) {
+      return res.status(404).json({ errors: { message: 'No profile found' } })
+    }
+
+    profile.experience = profile.experience.filter(experience => experience.id !== expId)
+
+    await profile.save()
+
+    res.status(200).json(profile)
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send(err.message)
+  }
+}
+
 const education = async ({ user, body }, res) => {
   try {
     if (!user) {
@@ -139,6 +170,6 @@ const education = async ({ user, body }, res) => {
   }
 }
 
-const ProfileController = { all, current, edit, education, experience, user }
+const ProfileController = { all, current, edit, education, experience, removeExp, user }
 
 module.exports = ProfileController
