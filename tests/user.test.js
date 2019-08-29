@@ -1,8 +1,15 @@
 const request = require('supertest')
 
 const server = require('../server/app')
-const { User } = require('../server/models')
-const { userOne, userTwo, userTwoToken, setupDatabase, cleanupDatabase } = require('./setup')
+const { User, Profile } = require('../server/models')
+const {
+  userOne,
+  userTwo,
+  userTwoId,
+  userTwoToken,
+  setupDatabase,
+  cleanupDatabase
+} = require('./setup')
 
 describe('Users Routes', () => {
   const testUser = { name: 'test', email: 'test@test.com', password: 'test1234' }
@@ -206,6 +213,30 @@ describe('Users Routes', () => {
       expect(cookie).toBe('token=')
       expect(body.user).toBe(false)
       expect(body.success).toBe(false)
+    })
+  })
+
+  describe('DELETE /api/users => Delete a user', () => {
+    it('should delete the current logged in user', async () => {
+      expect(await User.find({ _id: userTwoId }).countDocuments()).toBe(1)
+
+      await request(server)
+        .delete('/api/users')
+        .set('Authorization', `Bearer ${userTwoToken}`)
+        .expect(204)
+
+      expect(await User.findById(userTwoId)).toBeNull()
+      expect(await Profile.findOne({ user: userTwoId })).toBeNull()
+    })
+
+    it('should return 401 if user is not authenticated', async () => {
+      const { error } = await request(server)
+        .delete('/api/users')
+        .expect(401)
+
+      const { errors } = JSON.parse(error.text)
+
+      expect(errors.message).toEqual('You must be authenticated')
     })
   })
 })
