@@ -7,9 +7,7 @@ const edit = async ({ user, value }, res) => {
 
   try {
     if (!user) {
-      const error = JSON.stringify({ errors: { message: 'You must be authenticated' } })
-
-      throw new Error(error)
+      return res.status(401).json({ errors: { message: 'You must be authenticated' } })
     }
 
     const profileFields = data
@@ -24,7 +22,7 @@ const edit = async ({ user, value }, res) => {
     return res.status(200).json(profile)
   } catch (err) {
     console.error(err)
-    res.status(401).send(err.message)
+    res.status(500).send(err.message)
   }
 }
 
@@ -33,22 +31,20 @@ const all = async (req, res) => {
     const profiles = await Profile.find().populate('user', ['name', 'avatar'])
 
     if (profiles.length === 0) {
-      const error = JSON.stringify({ errors: { message: 'No profiles found' } })
-
-      throw new Error(error)
+      return res.status(404).json({ errors: { message: 'No profiles found' } })
     }
 
     res.status(200).json(profiles)
   } catch (err) {
     console.error(err.message)
-    res.status(404).send(err.message)
+    res.status(500).send(err.message)
   }
 }
 
 const current = async ({ user }, res) => {
   try {
     if (!user) {
-      return res.status(400).json({ errors: { message: 'You must be authenticated' } })
+      return res.status(401).json({ errors: { message: 'You must be authenticated' } })
     }
 
     const profile = await Profile.findOne({ user: user._id }).populate('user', ['name', 'avatar'])

@@ -3,7 +3,6 @@ const request = require('supertest')
 const server = require('../server/app')
 const Profile = require('../server/models/Profile')
 const {
-  profileOneId,
   profileOne,
   userOne,
   userOneId,
@@ -144,10 +143,10 @@ describe('Profiles Routes', () => {
       expect(body.user._id).toBe(userTwoId.toString())
     })
 
-    it('should return error 400 if the user is not authenticated', async () => {
+    it('should return error 401 if the user is not authenticated', async () => {
       const { error } = await request(server)
         .get('/api/profiles/me')
-        .expect(400)
+        .expect(401)
 
       const { errors } = JSON.parse(error.text)
 

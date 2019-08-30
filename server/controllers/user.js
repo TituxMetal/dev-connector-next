@@ -8,9 +8,7 @@ const register = async ({ value, session }, res) => {
     const foundUser = await User.find({ $or: [{ email }, { name }] }).countDocuments()
 
     if (foundUser) {
-      const error = JSON.stringify({ errors: { message: 'User already exists' } })
-
-      throw new Error(error)
+      return res.status(400).json({ errors: { message: 'User already exists' } })
     }
 
     const user = new User({ name, email, password })
@@ -22,7 +20,7 @@ const register = async ({ value, session }, res) => {
     res.status(201).json({ user, success: true })
   } catch (err) {
     console.error(err)
-    res.status(400).send(err.message)
+    res.status(500).send(err.message)
   }
 }
 
@@ -48,9 +46,7 @@ const login = async ({ session, value }, res) => {
 const logout = async (req, res) => {
   try {
     if (!req.user) {
-      const error = JSON.stringify({ errors: { message: 'You must be authenticated' } })
-
-      throw new Error(error)
+      return res.status(401).json({ errors: { message: 'You must be authenticated' } })
     }
 
     const { email, token } = req.user
@@ -68,7 +64,7 @@ const logout = async (req, res) => {
     res.status(200).json({ success: true })
   } catch (err) {
     console.error(err)
-    res.status(401).send(err.message)
+    res.status(500).send(err.message)
   }
 }
 

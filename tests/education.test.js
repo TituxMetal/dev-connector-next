@@ -2,17 +2,7 @@ const request = require('supertest')
 
 const server = require('../server/app')
 const Profile = require('../server/models/Profile')
-const {
-  educationOneId,
-  profileOneId,
-  profileOne,
-  userOne,
-  userOneId,
-  userTwoToken,
-  userTwoId,
-  setupDatabase,
-  cleanupDatabase
-} = require('./setup')
+const { educationOneId, userOne, userTwoToken, setupDatabase, cleanupDatabase } = require('./setup')
 
 describe('Profiles Routes', () => {
   const testEducation = {
@@ -89,7 +79,6 @@ describe('Profiles Routes', () => {
       const education = {
         school: 'az',
         degree: 123,
-        fieldofstudy: 'az',
         description: 'azaze',
         from: 'az123',
         current: 'az'
@@ -104,9 +93,6 @@ describe('Profiles Routes', () => {
 
       expect(errors.school).toBe(`"School field" length must be at least 4 characters long`)
       expect(errors.degree).toBe(`"Degree field" must be a string`)
-      expect(errors.fieldofstudy).toBe(
-        `"Field Of Study field" length must be at least 4 characters long`
-      )
       expect(errors.from).toBe(`"From field" must be a number of milliseconds or valid date string`)
       expect(errors.current).toBe(`"Current field" must be a boolean`)
       expect(errors.description).toBe(
@@ -125,7 +111,7 @@ describe('Profiles Routes', () => {
       expect(errors.message).toBe('A profile must be created before adding education')
     })
 
-    it('should return error 401 if user is no authenticated', async () => {
+    it('should return error 401 if user is not authenticated', async () => {
       const { error } = await request(server)
         .put('/api/profiles/education')
         .send(testEducation)
@@ -152,7 +138,7 @@ describe('Profiles Routes', () => {
       expect(body.education.length).toBe(0)
     })
 
-    it('should return error 401 if user is no authenticated', async () => {
+    it('should return error 401 if user is not authenticated', async () => {
       const { error } = await request(server)
         .delete(`/api/profiles/education/${educationOneId}`)
         .expect(401)

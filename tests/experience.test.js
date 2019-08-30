@@ -4,12 +4,8 @@ const server = require('../server/app')
 const Profile = require('../server/models/Profile')
 const {
   experienceOneId,
-  profileOneId,
-  profileOne,
   userOne,
-  userOneId,
   userTwoToken,
-  userTwoId,
   setupDatabase,
   cleanupDatabase
 } = require('./setup')
@@ -121,7 +117,7 @@ describe('Profiles Routes', () => {
       expect(errors.message).toBe('A profile must be created before adding experience')
     })
 
-    it('should return error 401 if user is no authenticated', async () => {
+    it('should return error 401 if user is not authenticated', async () => {
       const { error } = await request(server)
         .put('/api/profiles/experience')
         .send(testExperience)
@@ -148,7 +144,7 @@ describe('Profiles Routes', () => {
       expect(body.experience.length).toBe(0)
     })
 
-    it('should return error 401 if user is no authenticated', async () => {
+    it('should return error 401 if user is not authenticated', async () => {
       const { error } = await request(server)
         .delete(`/api/profiles/experience/${experienceOneId}`)
         .expect(401)
