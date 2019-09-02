@@ -1,4 +1,4 @@
-import { UserProvider } from '../context'
+import { UserProvider, ProfileProvider } from '../context'
 
 const ProviderComposer = ({ contexts, children }) =>
   contexts.reduceRight(
@@ -10,7 +10,8 @@ const ProviderComposer = ({ contexts, children }) =>
   )
 
 const ContextProvider = ({ children, authStatus, pathname }) => (
-  <ProviderComposer contexts={[<UserProvider authStatus={authStatus} pathname={pathname} />]}>
+  <ProviderComposer
+    contexts={[<UserProvider authStatus={authStatus} pathname={pathname} />, <ProfileProvider />]}>
     {children}
   </ProviderComposer>
 )
