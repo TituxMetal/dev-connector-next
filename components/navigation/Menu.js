@@ -55,7 +55,7 @@ const Menu = () => {
       </Brand>
       <List>
         <li>
-          <NavLink href='/developers'>Developers</NavLink>
+          <NavLink href='/profiles'>Profiles</NavLink>
         </li>
         {isAuthenticated ? <SignedInLinks logout={handleLogout} /> : <SignedOutLinks />}
       </List>
