@@ -14,5 +14,8 @@ module.exports = {
   // Session setup
   sessName: process.env.SESS_NAME || 'token',
   sessSecret: process.env.SESS_SECRET || 'session!secret!',
-  sessLifetime: process.env.SESS_LIFETIME || 1000 * 60 * 60 * 24 * 2 // <- 2 days
+  sessLifetime: process.env.SESS_LIFETIME || 1000 * 60 * 60 * 24 * 2, // <- 2 days
+  // GitHub secrets
+  githubClientId: process.env.GITHUB_CLIENT_ID || '',
+  githubClientSecret: process.env.GITHUB_CLIENT_SECRET
 }
