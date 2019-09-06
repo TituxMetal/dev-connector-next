@@ -22,6 +22,13 @@ router.post('/', isAuthenticated, validateBody(edit), ProfileController.edit)
 router.get('/', ProfileController.all)
 
 /*
+  @route    GET api/profile/github/:username
+  @desc     Get the 5 latest Github repos
+  @access   Public
+*/
+router.get('/github/:username', ProfileController.github)
+
+/*
  @route     GET api/profiles/me
  @desc      Get the current logged in user profile
  @access    Private
