@@ -1,6 +1,7 @@
 export { default as Avatar } from './Avatar'
 export { default as Footer } from './Footer'
 export { default as Form } from './Form'
+export { default as Icon } from './Icon'
 export { GlobalStyle, theme } from './globalStyle'
 export { default as Message } from './Message'
 export { default as Wrapper } from './Wrapper'
