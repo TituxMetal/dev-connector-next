@@ -5,7 +5,7 @@ import { Check } from 'styled-icons/fa-solid'
 import { User } from 'styled-icons/fa-regular'
 import { Location } from 'styled-icons/octicons'
 
-import { Avatar } from '../../../styled'
+import { Avatar, Icon } from '../../../styled'
 
 const Ul = styled.ul`
   display: flex;
@@ -45,16 +45,10 @@ const Section = styled.section`
   }
 `
 
-const Icon = styled.span`
-  display: inline-flex;
-  align-items: center;
-  margin-right: 1rem;
-`
-
 const List = ({ profiles }) => (
   <Ul>
     {profiles.map(profile => (
-      <Li key={profile._id}>
+      <Li key={profile.user._id}>
         <Avatar src={profile.user.avatar} alt={`${profile.user.name} avatar`} size='150px' />
         <Section>
           <h3>{profile.user.name}</h3>
@@ -67,8 +61,8 @@ const List = ({ profiles }) => (
           </p>
           <p>
             <Link
-              href={`/profile?profileId=${profile._id}`}
-              as={`/profile/${profile._id}`}
+              href={`/profiles/?userId=${profile.user._id}`}
+              as={`/profiles/${profile.user._id}`}
               passHref>
               <a>
                 <Icon>
