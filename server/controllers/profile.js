@@ -1,5 +1,7 @@
 const ObjectId = require('mongoose').Types.ObjectId
+const request = require('request')
 
+const { githubClientId, githubClientSecret } = require('../config')
 const { Profile } = require('../models')
 
 const edit = async ({ user, value }, res) => {
@@ -54,6 +56,34 @@ const current = async ({ user }, res) => {
     }
 
     res.status(200).json(profile)
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send(err.message)
+  }
+}
+
+const github = async ({ params }, res) => {
+  try {
+    const githubUri = `https://api.github.com/users/${
+      params.username
+    }/repos?per_page=5&sort=created:asc&type=owner&client_id=${githubClientId}&client_secret=${githubClientSecret}`
+    const options = { uri: githubUri, method: 'GET', headers: { 'user-agent': 'node.js' } }
+
+    request(options, (error, response, body) => {
+      if (error) {
+        console.error(error)
+      }
+
+      if (response.statusCode !== 200) {
+        return res.status(404).json({ msg: 'No Github profile found' })
+      }
+
+      if (JSON.parse(body).length === 0) {
+        return res.status(404).json({ msg: 'This user has no repositories' })
+      }
+
+      res.json(JSON.parse(body))
+    })
   } catch (err) {
     console.error(err.message)
     res.status(500).send(err.message)
@@ -218,6 +248,7 @@ const ProfileController = {
   edit,
   education,
   experience,
+  github,
   removeEdu,
   removeExp,
   user
