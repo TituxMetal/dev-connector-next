@@ -11,7 +11,10 @@ const ProviderComposer = ({ contexts, children }) =>
 
 const ContextProvider = ({ children, authStatus, pathname }) => (
   <ProviderComposer
-    contexts={[<UserProvider authStatus={authStatus} pathname={pathname} />, <ProfileProvider />]}>
+    contexts={[
+      <UserProvider authStatus={authStatus} pathname={pathname} />,
+      <ProfileProvider authStatus={authStatus} />
+    ]}>
     {children}
   </ProviderComposer>
 )
