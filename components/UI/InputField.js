@@ -1,8 +1,7 @@
-import { forwardRef, useContext, useEffect } from 'react'
-import styled from 'styled-components'
+import { forwardRef, useEffect } from 'react'
+import styled, { css } from 'styled-components'
 import { transparentize, tint } from 'polished'
 
-import { UserContext } from '../../context'
 import { Message } from '../../styled'
 
 const Field = styled.div`
@@ -12,47 +11,60 @@ const Field = styled.div`
   margin-bottom: 2rem;
   width: 100%;
 
-  &.error {
-    input,
-    textarea {
-      color: ${({ theme }) => tint(0.4, theme.danger)};
-      background: ${({ theme }) => transparentize(0.8, theme.danger)};
-      border: 2px solid ${({ theme }) => tint(0.2, theme.danger)};
-
-      &::placeholder {
+  ${({ error, theme }) =>
+    error &&
+    css`
+      & input,
+      & textarea {
         color: ${({ theme }) => tint(0.4, theme.danger)};
-      }
-    }
-  }
+        background: ${({ theme }) => transparentize(0.8, theme.danger)};
+        border: 2px solid ${({ theme }) => tint(0.2, theme.danger)};
 
-  input {
-    border: 2px solid ${({ theme }) => theme.secondary};
-    border-radius: 5px;
-    display: block;
-    margin: 0;
-    padding: 0.5rem;
-    width: 100%;
-  }
+        &::placeholder {
+          color: ${({ theme }) => tint(0.4, theme.danger)};
+        }
+      }
+    `}
 `
 
-const InputField = ({ change, className, name, label, type, value }, ref) => {
-  const { handleChange, error } = useContext(UserContext)
+const Input = styled.input`
+  border: 2px solid ${({ theme }) => theme.secondary};
+  border-radius: 5px;
+  display: block;
+  margin: 0;
+  padding: 0.5rem;
+  width: 100%;
+`
 
+const Textarea = styled.textarea`
+  background-color: transparent;
+  border: 2px solid ${({ theme }) => theme.secondary};
+  border-radius: 5px;
+  color: ${({ theme }) => theme.textOnMain};
+  padding: 0.5rem;
+`
+
+const InputField = ({ change, children, error, name, label, type, value }, ref) => {
   useEffect(() => {
     ref && ref.current.focus()
   }, [])
 
   return (
-    <Field className={error[name] && 'error'}>
-      <input
-        onChange={handleChange}
-        ref={ref}
-        name={name}
-        type={type}
-        value={value}
-        placeholder={label}
-      />
-      {error[name] && <Message danger>{error[name]}</Message>}
+    <Field error={error}>
+      {type === 'textarea' ? (
+        <Textarea onChange={change} name={name} placeholder={label} value={value} />
+      ) : (
+        <Input
+          onChange={change}
+          ref={ref}
+          name={name}
+          type={type}
+          value={value}
+          placeholder={label}
+        />
+      )}
+      {children}
+      {error && <Message danger>{error}</Message>}
     </Field>
   )
 }
