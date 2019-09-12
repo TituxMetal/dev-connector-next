@@ -1,15 +1,65 @@
-import { useState, createContext } from 'react'
+import { useEffect, useState, createContext } from 'react'
 import Router from 'next/router'
 
-import { getAllProfiles, getProfileById, getGithubRepos } from '../lib'
+import { editProfile, getAllProfiles, getProfileById, getGithubRepos, getUserProfile } from '../lib'
 export const ProfileContext = createContext()
 
-export const ProfileProvider = ({ children }) => {
+export const ProfileProvider = ({ children, authStatus }) => {
   const [profileList, setProfileList] = useState(null)
   const [profile, setProfile] = useState(null)
   const [githubrepos, setGithubrepos] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
+  const [error, setError] = useState('')
+
+  useEffect(
+    () => {
+      if (authStatus.success) {
+        setError('')
+        setLoading(true)
+        fetchUserProfile()
+      }
+    },
+    [authStatus]
+  )
+
+  const removeEmptyValues = obj => {
+    for (let propName in obj) {
+      !obj[propName] || obj[propName].length === 0
+        ? delete obj[propName]
+        : typeof obj[propName] === 'object'
+          ? removeEmptyValues(obj[propName])
+          : null
+    }
+    return obj
+  }
+
+  const handleSubmitEdit = async profileData => {
+    try {
+      setLoading(true)
+      const clone = Object.assign({}, profileData)
+      removeEmptyValues(clone)
+      const { data } = await editProfile(clone)
+      setProfile(data)
+      setError('')
+      Router.push('/dashboard')
+    } catch (err) {
+      const msg = (err.response.data && err.response.data.errors) || err.message
+      setError(msg)
+      setLoading(false)
+    }
+  }
+
+  const fetchUserProfile = async () => {
+    try {
+      const { data } = await getUserProfile()
+      setProfile(data)
+      setLoading(false)
+    } catch (err) {
+      const msg = (err.response.data && err.response.data.errors) || err.message
+      setError('')
+      setLoading(false)
+    }
+  }
 
   const fetchProfiles = async (id = false) => {
     try {
@@ -50,6 +100,7 @@ export const ProfileProvider = ({ children }) => {
         loading,
         profile,
         profileList,
+        handleSubmitEdit,
         fetchProfiles,
         fetchGithubRepos
       }}>
