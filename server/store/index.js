@@ -3,6 +3,6 @@ const RedisStore = require('connect-redis')(session)
 
 const { redisHost, redisPort, redisPassword } = require('../config')
 
-const options = { hos: redisHost, port: redisPort, pass: redisPassword }
+const options = { host: redisHost, port: redisPort, pass: redisPassword }
 
 module.exports = new RedisStore(options)
