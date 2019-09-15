@@ -5,7 +5,7 @@ import { Button, InputField } from '../UI'
 import { Form, Message, Wrapper } from '../../styled'
 
 const RegisterForm = () => {
-  const { fields, error, submitAuth } = useContext(UserContext)
+  const { fields, error, handleChange, submitAuth } = useContext(UserContext)
   const inputRef = useRef()
 
   const handleSubmit = async event => {
@@ -23,9 +23,31 @@ const RegisterForm = () => {
           {error.message}
         </Message>
       )}
-      <InputField ref={inputRef} name='name' type='text' label='Name' value={fields.name} />
-      <InputField name='email' type='email' label='Email' value={fields.email} />
-      <InputField name='password' type='password' label='Password' value={fields.password} />
+      <InputField
+        ref={inputRef}
+        change={handleChange}
+        name='name'
+        type='text'
+        label='Name'
+        value={fields.name}
+        error={error.name}
+      />
+      <InputField
+        change={handleChange}
+        name='email'
+        type='email'
+        label='Email'
+        value={fields.email}
+        error={error.email}
+      />
+      <InputField
+        change={handleChange}
+        name='password'
+        type='password'
+        label='Password'
+        value={fields.password}
+        error={error.password}
+      />
       <Wrapper>
         <Button type='submit' color='info'>
           Register
