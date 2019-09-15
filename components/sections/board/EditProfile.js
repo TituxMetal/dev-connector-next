@@ -73,98 +73,97 @@ const EditProfile = () => {
 
   return (
     <>
-      {(loading && <Spinner />) ||
-        (profile && (
-          <Form onSubmit={handleSubmit}>
-            {error.message && (
-              <Message danger global>
-                {error.message}
-              </Message>
-            )}
-            <SelectField
-              name='status'
-              defaults={selectOptions[0]}
-              options={selectOptions}
-              change={handleChange}
-              value={fields && fields.status}
-              error={error.status}>
-              <TextHelper>Give us an idea of where you are at in your career</TextHelper>
-            </SelectField>
-            <InputField
-              change={handleChange}
-              name='company'
-              type='text'
-              label='Company'
-              value={fields && fields.company}
-              error={error.company}>
-              <TextHelper>Could be your own company or one you work for</TextHelper>
-            </InputField>
-            <InputField
-              change={handleChange}
-              name='website'
-              type='text'
-              label='Website'
-              value={fields && fields.website}
-              error={error.website}>
-              <TextHelper>Could be your own or or a company website</TextHelper>
-            </InputField>
-            <InputField
-              change={handleChange}
-              name='location'
-              type='text'
-              label='Location'
-              value={fields && fields.location}
-              error={error.location}>
-              <TextHelper>City & state suggested (eg. Boston, MA)</TextHelper>
-            </InputField>
-            <InputField
-              change={handleChange}
-              name='skills'
-              type='text'
-              label='* Skills'
-              value={fields && fields.skills}
-              error={error.skills}>
-              <TextHelper>Please use comma separated values (eg. Html, Css)</TextHelper>
-            </InputField>
-            <InputField
-              change={handleChange}
-              name='githubusername'
-              type='text'
-              label='GitHub username'
-              value={fields && fields.githubusername}
-              error={error.githubusername}>
-              <TextHelper>
-                If you want your latest repos and a GitHub link, include your username
-              </TextHelper>
-            </InputField>
-            <InputField
-              change={handleChange}
-              name='bio'
-              type='textarea'
-              label='Bio'
-              value={fields && fields.bio}
-              error={error.bio}>
-              <TextHelper>Tell us a little about yourself</TextHelper>
-            </InputField>
-            <p>{JSON.stringify(fields)}</p>
-            <Wrapper>
-              <Button onClick={handleClick} type='button' color='complementary'>
-                Add Social Network Links
+      {(loading && <Spinner />) || (
+        <Form onSubmit={handleSubmit}>
+          {error.message && (
+            <Message danger global>
+              {error.message}
+            </Message>
+          )}
+          <SelectField
+            name='status'
+            defaults={selectOptions[0]}
+            options={selectOptions}
+            change={handleChange}
+            value={fields && fields.status}
+            error={error.status}>
+            <TextHelper>Give us an idea of where you are at in your career</TextHelper>
+          </SelectField>
+          <InputField
+            change={handleChange}
+            name='company'
+            type='text'
+            label='Company'
+            value={fields && fields.company}
+            error={error.company}>
+            <TextHelper>Could be your own company or one you work for</TextHelper>
+          </InputField>
+          <InputField
+            change={handleChange}
+            name='website'
+            type='text'
+            label='Website'
+            value={fields && fields.website}
+            error={error.website}>
+            <TextHelper>Could be your own or or a company website</TextHelper>
+          </InputField>
+          <InputField
+            change={handleChange}
+            name='location'
+            type='text'
+            label='Location'
+            value={fields && fields.location}
+            error={error.location}>
+            <TextHelper>City & state suggested (eg. Boston, MA)</TextHelper>
+          </InputField>
+          <InputField
+            change={handleChange}
+            name='skills'
+            type='text'
+            label='* Skills'
+            value={fields && fields.skills}
+            error={error.skills}>
+            <TextHelper>Please use comma separated values (eg. Html, Css)</TextHelper>
+          </InputField>
+          <InputField
+            change={handleChange}
+            name='githubusername'
+            type='text'
+            label='GitHub username'
+            value={fields && fields.githubusername}
+            error={error.githubusername}>
+            <TextHelper>
+              If you want your latest repos and a GitHub link, include your username
+            </TextHelper>
+          </InputField>
+          <InputField
+            change={handleChange}
+            name='bio'
+            type='textarea'
+            label='Bio'
+            value={fields && fields.bio}
+            error={error.bio}>
+            <TextHelper>Tell us a little about yourself</TextHelper>
+          </InputField>
+          <p>{JSON.stringify(fields)}</p>
+          <Wrapper>
+            <Button onClick={handleClick} type='button' color='complementary'>
+              Add Social Network Links
+            </Button>
+          </Wrapper>
+          {socialLinks && <SocialFields error={error} fields={fields} change={setFields} />}
+          <Wrapper spaced='between'>
+            <Button type='submit' color='info'>
+              Submit
+            </Button>
+            <Link href='/dashboard' passHref>
+              <Button as='a' color='secondary'>
+                Go Back
               </Button>
-            </Wrapper>
-            {socialLinks && <SocialFields error={error} fields={fields} change={setFields} />}
-            <Wrapper spaced='between'>
-              <Button type='submit' color='info'>
-                Submit
-              </Button>
-              <Link href='/dashboard' passHref>
-                <Button as='a' color='secondary'>
-                  Go Back
-                </Button>
-              </Link>
-            </Wrapper>
-          </Form>
-        ))}
+            </Link>
+          </Wrapper>
+        </Form>
+      )}
     </>
   )
 }
