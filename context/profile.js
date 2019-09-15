@@ -56,7 +56,6 @@ export const ProfileProvider = ({ children, authStatus }) => {
       setLoading(false)
     } catch (err) {
       const msg = (err.response.data && err.response.data.errors) || err.message
-      setError('')
       setLoading(false)
     }
   }
