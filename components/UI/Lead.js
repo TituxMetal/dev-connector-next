@@ -20,7 +20,7 @@ const SubTitle = styled.p`
   }
 `
 
-export default ({ as, children, text, subText, large, center }) => (
+const Lead = ({ as, children, text, subText, large, center }) => (
   <>
     <Title as={as} large={large} center={center}>
       {text}
@@ -31,3 +31,5 @@ export default ({ as, children, text, subText, large, center }) => (
     {children}
   </>
 )
+
+export default Lead

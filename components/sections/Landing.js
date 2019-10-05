@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { transparentize } from 'polished'
 
-const Landing = styled.section`
+const Container = styled.section`
   background: url('/static/img/showcase.jpg') no-repeat center center/cover;
   height: 100%;
   width: 100%;
@@ -32,10 +32,12 @@ const Inner = styled.div`
   }
 `
 
-export default ({ children }) => (
-  <Landing>
+const Landing = ({ children }) => (
+  <Container>
     <Overlay>
       <Inner>{children}</Inner>
     </Overlay>
-  </Landing>
+  </Container>
 )
+
+export default Landing

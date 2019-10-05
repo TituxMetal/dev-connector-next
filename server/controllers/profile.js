@@ -8,10 +8,6 @@ const edit = async ({ user, value }, res) => {
   const data = value.body
 
   try {
-    if (!user) {
-      return res.status(401).json({ errors: { message: 'You must be authenticated' } })
-    }
-
     const profileFields = data
     profileFields.skills = data.skills.split(',').map(skill => skill.trim())
 
@@ -45,10 +41,6 @@ const all = async (req, res) => {
 
 const current = async ({ user }, res) => {
   try {
-    if (!user) {
-      return res.status(401).json({ errors: { message: 'You must be authenticated' } })
-    }
-
     const profile = await Profile.findOne({ user: user._id }).populate('user', ['name', 'avatar'])
 
     if (!profile) {
@@ -113,10 +105,6 @@ const user = async ({ params }, res) => {
 
 const remove = async ({ user }, res) => {
   try {
-    if (!user) {
-      return res.status(401).json({ errors: { message: 'You must be authenticated' } })
-    }
-
     await Profile.findOneAndRemove({ user: user._id })
     res.status(204).json({ success: { message: 'Profile successfully deleted' } })
   } catch (err) {
@@ -127,10 +115,6 @@ const remove = async ({ user }, res) => {
 
 const experience = async ({ user, body }, res) => {
   try {
-    if (!user) {
-      return res.status(401).json({ errors: { message: 'You must be authenticated' } })
-    }
-
     const profile = await Profile.findOne({ user })
 
     if (!profile) {
@@ -162,10 +146,6 @@ const removeExp = async ({ user, params }, res) => {
         .json({ errors: { message: 'No experience found, invalid experience id' } })
     }
 
-    if (!user) {
-      return res.status(401).json({ errors: { message: 'You must be authenticated' } })
-    }
-
     const profile = await Profile.findOne({ user })
 
     if (!profile) {
@@ -185,10 +165,6 @@ const removeExp = async ({ user, params }, res) => {
 
 const education = async ({ user, body }, res) => {
   try {
-    if (!user) {
-      return res.status(401).json({ errors: { message: 'You must be authenticated' } })
-    }
-
     const profile = await Profile.findOne({ user })
 
     if (!profile) {
@@ -218,10 +194,6 @@ const removeEdu = async ({ user, params }, res) => {
       return res
         .status(404)
         .json({ errors: { message: 'No education found, invalid education id' } })
-    }
-
-    if (!user) {
-      return res.status(401).json({ errors: { message: 'You must be authenticated' } })
     }
 
     const profile = await Profile.findOne({ user })

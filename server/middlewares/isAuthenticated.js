@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 const { jwtSecret, sessName } = require('../config')
 
-const isAuthenticated = async (req, res, next) => {
+const isAuthenticated = (priv = false) => async (req, res, next) => {
   const headerToken = req.header('Authorization') || null
   const sessionToken = req.session && req.session.accessToken
   const token = headerToken ? headerToken.replace('Bearer ', '') : sessionToken
@@ -22,7 +22,7 @@ const isAuthenticated = async (req, res, next) => {
     delete req.user
     delete req.session
 
-    next()
+    priv ? res.status(401).json({ errors: { message: 'You must be authenticated' } }) : next()
   }
 }
 

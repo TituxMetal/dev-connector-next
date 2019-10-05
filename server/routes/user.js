@@ -25,20 +25,20 @@ router.post('/login', validateBody(login, false), UserController.login)
  @desc      Logout user
  @access    Private
 */
-router.post('/logout', isAuthenticated, UserController.logout)
+router.post('/logout', isAuthenticated(true), UserController.logout)
 
 /*
  @route     GET api/users/me
  @desc      Check user authentication
  @access    Private
 */
-router.get('/me', isAuthenticated, UserController.me)
+router.get('/me', isAuthenticated(false), UserController.me)
 
 /*
  @route     DELETE api/users
  @desc      Delete the current logged in user
  @access    Private
 */
-router.delete('/', isAuthenticated, UserController.remove)
+router.delete('/', isAuthenticated(true), UserController.remove)
 
 module.exports = router

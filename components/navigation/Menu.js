@@ -1,9 +1,8 @@
-import { useContext } from 'react'
 import styled from 'styled-components'
 import { Code } from 'styled-icons/fa-solid/Code'
-import { shade, tint, transparentize } from 'polished'
+import { shade, transparentize } from 'polished'
 
-import { UserContext } from '../../context'
+import { useAuthState } from '../../store'
 import { NavLink, SignedInLinks, SignedOutLinks } from '../navigation'
 
 const NavBar = styled.nav`
@@ -45,7 +44,7 @@ const List = styled.ul`
 `
 
 const Menu = () => {
-  const { isAuthenticated, handleLogout } = useContext(UserContext)
+  const { isAuthenticated } = useAuthState()
 
   return (
     <NavBar>
@@ -57,7 +56,7 @@ const Menu = () => {
         <li>
           <NavLink href='/profiles'>Profiles</NavLink>
         </li>
-        {isAuthenticated ? <SignedInLinks logout={handleLogout} /> : <SignedOutLinks />}
+        {isAuthenticated ? <SignedInLinks /> : <SignedOutLinks />}
       </List>
     </NavBar>
   )
