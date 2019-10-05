@@ -148,8 +148,15 @@ describe('Profiles Routes', () => {
     })
 
     it('should return error 404 if invalid education id given', async () => {
+      const { email, password } = userOne
+      const res = await request(server)
+        .post('/api/users/login')
+        .send({ email, password })
+        .expect(200)
+      const { token } = res.body.user
       const { error } = await request(server)
         .delete(`/api/profiles/education/123abc`)
+        .set('Authorization', `${token}`)
         .expect(404)
 
       const { errors } = JSON.parse(error.text)
