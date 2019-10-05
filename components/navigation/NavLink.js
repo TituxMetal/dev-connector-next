@@ -3,7 +3,7 @@ import { tint } from 'polished'
 
 import { ActiveLink } from '../navigation'
 
-const NavLink = styled.a`
+const NavItem = styled.a`
   color: ${({ theme }) => tint(0.35, theme.secondary)};
   cursor: pointer;
   text-decoration: none;
@@ -28,7 +28,7 @@ const NavLink = styled.a`
   }
 `
 
-export const NavButton = styled(NavLink)`
+export const NavButton = styled(NavItem)`
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -42,8 +42,12 @@ export const NavButton = styled(NavLink)`
   }
 `
 
-export default ({ children, href }) => (
-  <ActiveLink href={href}>
-    <NavLink>{children}</NavLink>
-  </ActiveLink>
-)
+const NavLink = ({ children, href }) => {
+  return (
+    <ActiveLink href={href}>
+      <NavItem>{children}</NavItem>
+    </ActiveLink>
+  )
+}
+
+export default NavLink
