@@ -1,19 +1,23 @@
-import { useContext, useRef } from 'react'
+import { useRef } from 'react'
 
-import { UserContext } from '../../context'
+import { useAuthState, useAuthDispatch } from '../../store'
 import { Button, InputField } from '../UI'
 import { Form, Message, Wrapper } from '../../styled'
 
 const RegisterForm = () => {
-  const { fields, error, handleChange, submitAuth } = useContext(UserContext)
+  const { fields, error } = useAuthState()
+  const { fieldChange, authRegisterUser, dispatch } = useAuthDispatch()
+  const { name, email, password } = fields
   const inputRef = useRef()
+
+  const handleChange = event => {
+    dispatch(fieldChange(event.target.name, event.target.value))
+  }
 
   const handleSubmit = async event => {
     event.preventDefault()
 
-    const { name, email, password } = fields
-
-    await submitAuth({ name, email, password })
+    await authRegisterUser({ name, email, password }, dispatch)
   }
 
   return (
@@ -29,7 +33,7 @@ const RegisterForm = () => {
         name='name'
         type='text'
         label='Name'
-        value={fields.name}
+        value={name}
         error={error.name}
       />
       <InputField
@@ -37,7 +41,7 @@ const RegisterForm = () => {
         name='email'
         type='email'
         label='Email'
-        value={fields.email}
+        value={email}
         error={error.email}
       />
       <InputField
@@ -45,7 +49,7 @@ const RegisterForm = () => {
         name='password'
         type='password'
         label='Password'
-        value={fields.password}
+        value={password}
         error={error.password}
       />
       <Wrapper>

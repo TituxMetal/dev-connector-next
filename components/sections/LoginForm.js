@@ -1,19 +1,23 @@
-import { useContext, useRef } from 'react'
+import { useRef } from 'react'
 
-import { UserContext } from '../../context'
+import { useAuthState, useAuthDispatch } from '../../store'
 import { Button, InputField } from '../UI'
 import { Form, Message, Wrapper } from '../../styled'
 
 const LoginForm = () => {
-  const { fields, error, handleChange, submitAuth } = useContext(UserContext)
+  const { fields, error } = useAuthState()
+  const { fieldChange, authLoginUser, dispatch } = useAuthDispatch()
+  const { email, password } = fields
   const inputRef = useRef()
+
+  const handleChange = event => {
+    dispatch(fieldChange(event.target.name, event.target.value))
+  }
 
   const handleSubmit = async event => {
     event.preventDefault()
 
-    const { email, password } = fields
-
-    await submitAuth({ email, password })
+    await authLoginUser({ email, password }, dispatch)
   }
 
   return (
