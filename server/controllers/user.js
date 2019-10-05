@@ -45,10 +45,6 @@ const login = async ({ session, value }, res) => {
 
 const logout = async (req, res) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ errors: { message: 'You must be authenticated' } })
-    }
-
     const { email, token } = req.user
     const logoutUser = await User.findOne({ $or: [{ email }, { token }] })
 
@@ -73,10 +69,6 @@ const me = async ({ user }, res) =>
 
 const remove = async ({ user }, res) => {
   try {
-    if (!user) {
-      return res.status(401).json({ errors: { message: 'You must be authenticated' } })
-    }
-
     await Profile.findOneAndRemove({ user })
     await User.findOneAndRemove({ _id: user })
 
