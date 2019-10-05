@@ -12,7 +12,7 @@ const education = require('../validation/education')
  @params    company: string, website: string, location: string, status: string, skills: [string], bio: string, githubusername: string
  @access    Private
 */
-router.post('/', isAuthenticated, validateBody(edit), ProfileController.edit)
+router.post('/', isAuthenticated(true), validateBody(edit), ProfileController.edit)
 
 /*
  @route     GET api/profiles
@@ -33,7 +33,7 @@ router.get('/github/:username', ProfileController.github)
  @desc      Get the current logged in user profile
  @access    Private
 */
-router.get('/me', isAuthenticated, ProfileController.current)
+router.get('/me', isAuthenticated(true), ProfileController.current)
 
 /*
  @route     GET api/profiles/user/:userId
@@ -47,34 +47,44 @@ router.get('/user/:userId', ProfileController.user)
  @desc      Delete a user profile
  @access    Private
 */
-router.delete('/', isAuthenticated, ProfileController.remove)
+router.delete('/', isAuthenticated(true), ProfileController.remove)
 
 /*
  @route     PUT api/profiles/experience
  @desc      Add profile experience
  @access    Private
 */
-router.put('/experience', isAuthenticated, validateBody(experience), ProfileController.experience)
+router.put(
+  '/experience',
+  isAuthenticated(true),
+  validateBody(experience),
+  ProfileController.experience
+)
 
 /*
  @route     DELETE api/profiles/experience/:expId
  @desc      Delete experience from profile
  @access    Private
 */
-router.delete('/experience/:expId', isAuthenticated, ProfileController.removeExp)
+router.delete('/experience/:expId', isAuthenticated(true), ProfileController.removeExp)
 
 /*
  @route     PUT api/profiles/education
  @desc      Add profile education
  @access    Private
 */
-router.put('/education', isAuthenticated, validateBody(education), ProfileController.education)
+router.put(
+  '/education',
+  isAuthenticated(true),
+  validateBody(education),
+  ProfileController.education
+)
 
 /*
  @route     DELETE api/profiles/education/:eduId
  @desc      Delete education from profile
  @access    Private
 */
-router.delete('/education/:eduId', isAuthenticated, ProfileController.removeEdu)
+router.delete('/education/:eduId', isAuthenticated(true), ProfileController.removeEdu)
 
 module.exports = router
