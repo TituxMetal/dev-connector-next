@@ -1,11 +1,14 @@
 import Link from 'next/link'
 
+import { useProtectedRoute } from '../hooks'
 import { Page } from '../components/layout'
 import { Landing } from '../components/sections'
 import { Button, Lead } from '../components/UI'
 import { Wrapper } from '../styled'
 
 const Home = () => {
+  useProtectedRoute(false)
+
   return (
     <Page full title='Home Page'>
       <Landing>

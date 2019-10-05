@@ -1,10 +1,13 @@
 import Link from 'next/link'
 
+import { useProtectedRoute } from '../hooks'
 import { Page } from '../components/layout'
 import { RegisterForm } from '../components/sections'
-import { Button, Lead } from '../components/UI'
+import { Lead } from '../components/UI'
 
 const Register = () => {
+  useProtectedRoute(false)
+
   return (
     <Page title='Register Page'>
       <Lead text='Register' subText='Create your account' />

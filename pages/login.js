@@ -1,10 +1,13 @@
 import Link from 'next/link'
 
+import { useProtectedRoute } from '../hooks'
 import { Page } from '../components/layout'
 import { LoginForm } from '../components/sections'
-import { Button, Lead } from '../components/UI'
+import { Lead } from '../components/UI'
 
 const Login = () => {
+  useProtectedRoute(false)
+
   return (
     <Page title='Login Page'>
       <Lead text='Login' subText='Login to your account' />
